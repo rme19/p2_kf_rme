@@ -43,7 +43,7 @@ class KalmanFilterNode(Node):
         # TODO: Run predict() and update() of KalmanFilter
         # TODO: Publish estimated state
 
-        # Inicializamos la odometría (z = [x, y, yaw])
+        # Inicializamos la medición de la posición
         current_pose = odom_to_pose2D(msg)
         # Normalizamos la medida de la odometría
         self.normalized_pose = np.array(get_normalized_pose2D(self.initial_state , current_pose))
@@ -52,17 +52,11 @@ class KalmanFilterNode(Node):
         linear = msg.twist.twist.linear
         angular = msg.twist.twist.angular
         # Sacamos su norma
-        vx=linear.x
-        vy=linear.y
         v = np.sqrt(linear.x**2 + linear.y**2)
         omega = np.sqrt(angular.x**2 + angular.y**2 + angular.z**2)
         # Las agrupamos en el vector u
         u = np.array([v,omega])
 
-        # # Sacamos medición actual del robot
-        # [x, y, yaw] = odom_to_pose2D(msg)
-        # # Agrupamos medidas
-        # z=np.array([x, y, yaw])
         # Añadimos ruido
         z = generate_noisy_measurement_2(self.normalized_pose, linear.x, linear.y, omega)
         # Nos quedeamos con x, y, yaw

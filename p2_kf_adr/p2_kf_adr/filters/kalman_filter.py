@@ -50,7 +50,7 @@ class KalmanFilter:
 
 class KalmanFilter_2:
     def __init__(self, initial_state, initial_covariance,
-                 proc_noise_std=[0.02]*6, obs_noise_std=[0.02]*6):
+                 proc_noise_std=[0.1]*6, obs_noise_std=[0.02]*6):
 
         self.mu = initial_state  # Initial state estimate [x, y, theta, vx, vy, omega]
         self.Sigma = initial_covariance  # Initial uncertainty
